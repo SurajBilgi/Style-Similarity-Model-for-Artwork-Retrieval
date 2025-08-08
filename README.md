@@ -59,12 +59,12 @@ streamlit run streamlit_app.py
 ### Build Database Interface
 The app provides an intuitive interface for uploading multiple artwork images to build your database. You can drag and drop files or browse to select them, with support for PNG, JPG, and JPEG formats. The interface shows upload progress and automatically processes images to generate CLIP embeddings.
 
-![Build Database Interface](images/build_database.png)
+![Build Database Interface](images/build_database1.png)
 
 ### Search Interface and Results
 Once you have images in your database, you can upload a query image to find similar artworks. The app displays your query image alongside the top similar matches with confidence scores. The results show how effectively CLIP embeddings capture visual similarity between artworks.
 
-![Search Results Interface](images/search_results.png)
+![Search Results Interface](images/search_results1.png)
 
 ## How It Works
 
