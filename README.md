@@ -1,28 +1,24 @@
 # Style Similarity Model for Artwork Retrieval
 
-This project implements a style similarity search system for artworks using CLIP (Contrastive Language-Image Pre-Training) from Hugging Face. The system can identify visually similar artworks and provides multiple interfaces for interaction.
+This project implements a style similarity search system for artworks using CLIP (Contrastive Language-Image Pre-Training) from Hugging Face. The system can identify visually similar artworks through an interactive Streamlit web application.
 
 ## Features
 
 - **CLIP-based Embeddings**: Uses OpenAI's CLIP model via Hugging Face for high-quality image embeddings
 - **FAISS Vector Database**: Efficient similarity search using Facebook's FAISS library
-- **Multiple Interfaces**: 
-  - Jupyter Notebook for experimentation
-  - Python script for batch processing
-  - Streamlit web app for interactive use
+- **Interactive Web Interface**: User-friendly Streamlit application for uploading and searching artworks
 - **Top-K Similar Images**: Returns the most similar artworks with confidence scores
 - **Visual Results**: Display query and results with similarity scores
+- **Persistent Storage**: Database saved between sessions for continuous use
 
 ## Project Structure
 
 ```
 Style-Similarity-Model-for-Artwork-Retrieval/
-├── clip_artwork_similarity.ipynb    # Jupyter notebook
-├── clip_artwork_similarity.py       # Python script
 ├── streamlit_app.py                 # Streamlit web application
 ├── requirements.txt                 # Dependencies
 ├── README.md                        # This file
-├── data/                           # Place your artwork images here
+├── scaling_writeup.md              # Production scaling strategy
 ├── uploaded_images/                # Streamlit uploaded images (auto-created)
 ├── image_database.pkl              # FAISS metadata (auto-created)
 └── image_index.faiss              # FAISS index (auto-created)
@@ -43,31 +39,11 @@ pip install -r requirements.txt
 
 ## Usage
 
-### 1. Jupyter Notebook (`clip_artwork_similarity.ipynb`)
+### Streamlit Web App
 
-Best for experimentation and learning:
+Run the interactive web application:
 
-1. Place your artwork images in the `data/` directory
-2. Open the notebook in Jupyter Lab/Notebook
-3. Run cells sequentially
-4. Modify the query image path in the last cell to test similarity search
-
-### 2. Python Script (`clip_artwork_similarity.py`)
-
-Best for batch processing:
-
-1. Place your artwork images in the `data/` directory
-2. Run the script:
-```bash
-python clip_artwork_similarity.py
-```
-3. Uncomment and modify the example usage section to test with your images
-
-### 3. Streamlit Web App (`streamlit_app.py`)
-
-Best for interactive use and demos:
-
-1. Run the Streamlit app:
+1. Launch the Streamlit app:
 ```bash
 streamlit run streamlit_app.py
 ```
@@ -75,8 +51,20 @@ streamlit run streamlit_app.py
 2. Open your browser to the provided URL (usually `http://localhost:8501`)
 
 3. Use the web interface:
-   - **Build Database Tab**: Upload multiple images to build your artwork database
-   - **Search Tab**: Upload a query image to find similar artworks
+   - **🏗️ Build Database Tab**: Upload multiple images to build your artwork database
+   - **🔍 Search Tab**: Upload a query image to find similar artworks
+
+## How the App Looks
+
+### Build Database Interface
+The app provides an intuitive interface for uploading multiple artwork images to build your database. You can drag and drop files or browse to select them, with support for PNG, JPG, and JPEG formats. The interface shows upload progress and automatically processes images to generate CLIP embeddings.
+
+![Build Database Interface](images/build_database.png)
+
+### Search Interface and Results
+Once you have images in your database, you can upload a query image to find similar artworks. The app displays your query image alongside the top similar matches with confidence scores. The results show how effectively CLIP embeddings capture visual similarity between artworks.
+
+![Search Results Interface](images/search_results.png)
 
 ## How It Works
 
@@ -102,27 +90,6 @@ streamlit run streamlit_app.py
 - **Search**: Exact nearest neighbor search
 - **Storage**: Persistent storage with pickle for metadata
 
-## Example Usage
-
-### Notebook/Script
-```python
-# Generate embeddings for all images
-embeddings = generate_embeddings(image_paths, processor, model, device)
-
-# Find similar images
-results = find_similar('data/query.jpg', top_k=5)
-
-# Display results
-show_results('data/query.jpg', results)
-```
-
-### Streamlit App
-1. Upload artwork images in the "Build Database" tab
-2. Switch to "Search Similar Images" tab
-3. Upload a query image
-4. Click "Search Similar Images"
-5. View top 5 results with confidence scores
-
 ## Dependencies
 
 - `torch`: PyTorch for deep learning
@@ -130,9 +97,8 @@ show_results('data/query.jpg', results)
 - `Pillow`: Image processing
 - `numpy`: Numerical operations
 - `faiss-cpu`: Vector similarity search
-- `matplotlib`: Visualization (notebook/script)
-- `tqdm`: Progress bars
 - `streamlit`: Web application framework
+- `tqdm`: Progress bars
 
 ## Performance Notes
 
@@ -143,7 +109,7 @@ show_results('data/query.jpg', results)
 
 ## Scaling Considerations
 
-For production deployment, consider:
+For production deployment, see the detailed [scaling write-up](scaling_writeup.md) which covers:
 
 - **Distributed Storage**: Use cloud storage for images and embeddings
 - **Database Scaling**: Consider Milvus or Pinecone for larger datasets
